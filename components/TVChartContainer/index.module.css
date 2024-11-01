@@ -1,0 +1,15 @@
+.VersionHeader {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #222;
+  color: #fff;
+}
+
+.TVChartContainer {
+  height: 100vh;
+}
+.TVChartContainer iframe {
+  height: 100% !important;
+}
