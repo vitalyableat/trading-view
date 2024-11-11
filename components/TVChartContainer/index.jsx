@@ -67,6 +67,74 @@ export class TVChartContainer extends React.PureComponent {
       client_id: "chainstats.pro",
       user_id: this.props.userId,
       theme: "dark",
+      custom_indicators_getter: function (PineJS) {
+        return Promise.resolve([
+          {
+            name: "USDT Signal v.1.2",
+            metainfo: {
+              _metainfoVersion: 1.2,
+              id: "USDT Signal@tv-basicstudies-1",
+              description: "USDT Signal v.1.2",
+              shortDescription: "USDT Signal",
+              format: { type: "inherit" },
+              linkedToSeries: true,
+              is_price_study: true,
+              plots: [
+                { id: "plot_triangle_down", type: "shapes" },
+                { id: "plot_triangle_up", type: "shapes" },
+              ],
+              defaults: {
+                styles: {
+                  plot_triangle_down: {
+                    location: 'AboveBar',
+                    plottype: 'shape_triangle_down',
+                    color: "#FF5252",
+                    size: "size_small",
+                    editable: false,
+                  },
+                  plot_triangle_up: {
+                    location: 'BelowBar',
+                    plottype: 'shape_triangle_up',
+                    color: "#4CAF50",
+                    size: "size_small",
+                    editable: false,
+                  },
+                },
+                inputs: {
+                  is_BKXCall_Enable: true,
+                },
+              },
+              styles: {
+                plot_triangle_down: { title: "Plot", histogramBase: 0, joinPoints: true },
+                plot_triangle_up: { title: "Plot", histogramBase: 0, joinPoints: true },
+              },
+              inputs: [
+                {
+                  id: "is_BKXCall_Enable",
+                  name: "BKX Call",
+                  defval: true,
+                  type: "bool",
+                  tooltip: "Enable BKX call with a Red triangle above (Short) or below (Long)\n\nAggiunge indicatore per il BKX, un triangolo rosso sopra (Short) o sotto (Long)",
+                  group: "EXTRA CALLS"
+                },
+              ],
+            },
+            constructor: function () {
+              this.main = function (ctx, inputs) {
+                const is_BKXCall_Enable = inputs(0);
+
+                let is_BKXCall_Long = Number(is_BKXCall_Enable && Math.floor(Math.random() * 2));
+                let is_BKXCall_Short = Number(is_BKXCall_Enable && Math.floor(Math.random() * 2));
+
+                return [
+                  {value: is_BKXCall_Long},
+                  {value: is_BKXCall_Short},
+                ];
+              };
+            }
+          }
+        ]);
+      },
     };
 
     const tvWidget = new widget(widgetOptions);

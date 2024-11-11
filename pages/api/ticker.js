@@ -2,10 +2,12 @@ import { applyMiddleware } from "../../lib/middleware";
 import Binance from "../../lib/exchanges/binance";
 import MEXC from "../../lib/exchanges/mexc";
 import KuCoin from "../../lib/exchanges/kucoin";
+import Bitmart  from "../../lib/exchanges/bitmart";
 
 const binance = new Binance();
 const mexc = new MEXC();
 const kucoin = new KuCoin();
+const bitmart = new Bitmart();
 
 export default async function handler(req, res) {
   await applyMiddleware(req, res);
@@ -23,6 +25,8 @@ export default async function handler(req, res) {
         ? await mexc.ticker24hrs(symbol)
         : exchange.toLowerCase() === "kucoin"
         ? await kucoin.ticker24hrs(symbol)
+        : exchange.toLowerCase() === "bitmart"
+        ? await bitmart.ticker24hrs(symbol)
         : { lastPrice: 0, priceChange: 0, priceChangePercent: 0 };
 
     const lastPrice = parseFloat(response.lastPrice);
